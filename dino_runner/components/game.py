@@ -14,7 +14,6 @@ class Game:
         self.game_speed = 20
         self.x_pos_bg = 0
         self.y_pos_bg = 380
-
         self.player = Dinosaur()
 
     def run(self):
@@ -32,7 +31,8 @@ class Game:
                 self.playing = False
 
     def update(self):
-        self.player.update()
+        user_input = pygame.key.get_pressed()
+        self.player.update(user_input)
 
     def draw(self):
         self.clock.tick(FPS)
