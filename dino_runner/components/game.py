@@ -39,6 +39,7 @@ class Game:
         # Game loop: events - update - draw
         self.playing = True
         self.obstacle_manager.reset_obstacles()
+        self.score = 0
         while self.playing:
             self.events()
             self.update()
@@ -85,7 +86,17 @@ class Game:
         text_rect = text.get_rect()
         text_rect.center = (1000, 50) 
         self.screen.blit(text, text_rect)  
-
+    
+    def draw_text(self):
+        half_screen_height = SCREEN_HEIGHT // 2
+        half_screen_width = SCREEN_WIDTH // 2
+        font = pygame.font.Font(FONT_STYLE, 22)
+        text = font.render("Press any key to start", True, (0, 0, 0))
+        text_rect = text.get_rect()
+        text_rect.center = (half_screen_width, half_screen_height)    
+        self.screen.blit(text, text_rect)
+       
+    
     def handle_events_on_menu(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -93,26 +104,40 @@ class Game:
                 self.running = False
             elif event.type == pygame.KEYDOWN:
                 self.run()
-                #KEYDOWN = qualquer tecla pressionada
-             
+                #KEYDOWN = qualquer tecla pressionada     
+
     def show_menu(self):
         self.screen.fill((255, 255, 255)) 
         half_screen_height = SCREEN_HEIGHT // 2
         half_screen_width = SCREEN_WIDTH // 2
+        font = pygame.font.Font(FONT_STYLE, 22)
         
         if self.death_count == 0:
-          font = pygame.font.Font(FONT_STYLE, 22)
-          text = font.render("Press any key to start", True, (0, 0, 0))
-          text_rect = text.get_rect()
-          text_rect.center = (half_screen_width, half_screen_height)
-          self.screen.blit(text, text_rect)
-        else:
-          self.screen.blit(ICON, (half_screen_width - 20, half_screen_height - 140))
-          ## mostrar mensagem de 'Press any key to restart'
-            ## mostrar score atingido
-            ## mostrar death_count
+            self.draw_text()
+        elif self.death_count > 0:
+            text = font.render("Press any key to start", True, (0, 0, 0))
+            score = font.render(f"Your score: {self.score}", True, (0, 0, 0))
+            score_rect = score.get_rect()
+            score_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            deathCount = font.render(f"Your death count: {self.death_count}", True, (0, 0, 0))
+            deathCount_rect = deathCount.get_rect()
+            deathCount_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100)
+            self.game_speed = 20
+            self.screen.blit(score, score_rect)
+            self.screen.blit(deathCount, deathCount_rect)
+            self.screen.blit(ICON, (half_screen_width - 20, half_screen_height - 140))
+            text_rect = text.get_rect()
+            text_rect.center = (half_screen_width, half_screen_height)   
+            self.screen.blit(text, text_rect)
+            
+       
+        
 
-            ### Resetar score e game_speed quando reiniciar uma nova rodada do jogo
+         ## mostrar mensagem de 'Press any key to restart' ok
+            ## mostrar score atingido ok
+            ## mostrar death_count ok
+
+            ### Resetar score e game_speed quando reiniciar uma nova rodada do jogo 
             ### Criar método para remover a repetição de código para o texto
 
         pygame.display.update()
