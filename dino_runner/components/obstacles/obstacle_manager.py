@@ -29,6 +29,7 @@ class ObstacleManager:
                 break
               else: 
                   self.obstacles.remove(obstacle)
+   
     def reset_obstacles(self):
         self.obstacles = []
 
